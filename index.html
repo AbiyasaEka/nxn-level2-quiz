@@ -5,6 +5,10 @@
     <title>Hello World</title>
     <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <link
+      href="https://fonts.googleapis.com/css?family=DM Sans"
+      rel="stylesheet"
+    />
 
     <!-- Don't use this in production: -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -20,6 +24,7 @@
   <body>
     <div id="root"></div>
     <script type="text/babel">
+      const x = 5;
       function App() {
         const [page, setPage] = React.useState(0);
         const [formData, setFormData] = React.useState({
@@ -27,13 +32,18 @@
           email: "",
           phone: "",
           company: "",
-          service: "",
-          budget: "",
+          service: "Development",
+          budget: "$50.000",
         });
         const [nameEmpty, setNameEmpty] = React.useState(false);
         const [emailEmpty, setEmailEmpty] = React.useState(false);
         const [phoneEmpty, setPhoneEmpty] = React.useState(false);
         const [companyEmpty, setCompanyEmpty] = React.useState(false);
+
+        const nameRef = React.useRef(null);
+        const emailRef = React.useRef(null);
+        const phoneRef = React.useRef(null);
+        const companyRef = React.useRef(null);
 
         const FormTitles = [
           "Contact details",
@@ -48,417 +58,28 @@
           "",
         ];
 
-        if (formData.service === "") {
-          setFormData({ ...formData, service: "Development" });
-        }
-        if (formData.budget === "") {
-          setFormData({ ...formData, budget: "$50.000" });
-        }
-
         const PageDisplay = () => {
           if (page === 0) {
             return (
-              <div className="contact-details">
-                <div className="body">
-                  <div className="item-1">
-                    <input
-                      id="name"
-                      className={`text-edit-form icon-name ${
-                        nameEmpty === false ? "" : "empty-field-text-edit"
-                      }`}
-                      type="text"
-                      placeholder="Name"
-                      value={formData.name}
-                      onChange={(event) =>
-                        setFormData({ ...formData, name: event.target.value })
-                      }
-                    />
-                    <label
-                      id="label-name"
-                      className={`label-form ${
-                        nameEmpty === false ? "" : "empty-field-label"
-                      }`}
-                      for="name"
-                    >
-                      Name
-                    </label>
-                    <label
-                      id="label-name-required"
-                      className={`label-form-required ${
-                        nameEmpty === false ? "hidden" : ""
-                      }`}
-                    >
-                      Name is required
-                    </label>
-                  </div>
-
-                  <div className="item-2">
-                    <input
-                      id="email"
-                      className={`text-edit-form icon-email ${
-                        emailEmpty === false ? "" : "empty-field-text-edit"
-                      }`}
-                      type="text"
-                      placeholder="Email"
-                      value={formData.email}
-                      onChange={(event) =>
-                        setFormData({ ...formData, email: event.target.value })
-                      }
-                    />
-                    <label
-                      id="label-email"
-                      for="email"
-                      className={`label-form ${
-                        emailEmpty === false ? "" : "empty-field-label"
-                      }`}
-                    >
-                      Email
-                    </label>
-                    <label
-                      id="label-email-required"
-                      className={`label-form-required ${
-                        emailEmpty === false ? "hidden" : ""
-                      }`}
-                    >
-                      Email is required
-                    </label>
-                  </div>
-
-                  <div className="item-3">
-                    <input
-                      id="phone"
-                      className={`text-edit-form icon-phone ${
-                        phoneEmpty === false ? "" : "empty-field-text-edit"
-                      }`}
-                      type="text"
-                      placeholder="Phone number"
-                      value={formData.phone}
-                      onChange={(event) =>
-                        setFormData({ ...formData, phone: event.target.value })
-                      }
-                    />{" "}
-                    <label
-                      id="label-phone"
-                      for="phone"
-                      className={`label-form ${
-                        phoneEmpty === false ? "" : "empty-field-label"
-                      }`}
-                    >
-                      Phone Number
-                    </label>{" "}
-                    <label
-                      id="label-phone-required"
-                      className={`label-form-required ${
-                        phoneEmpty === false ? "hidden" : ""
-                      }`}
-                    >
-                      Phone is required
-                    </label>
-                  </div>
-
-                  <div className="item-4">
-                    <input
-                      id="company"
-                      className={`text-edit-form icon-company ${
-                        companyEmpty === false ? "" : "empty-field-text-edit"
-                      }`}
-                      type="text"
-                      placeholder="Company"
-                      value={formData.company}
-                      onChange={(event) =>
-                        setFormData({
-                          ...formData,
-                          company: event.target.value,
-                        })
-                      }
-                    />{" "}
-                    <label
-                      id="label-company"
-                      className={`label-form ${
-                        companyEmpty === false ? "" : "empty-field-label"
-                      }`}
-                    >
-                      Company
-                    </label>{" "}
-                    <label
-                      id="label-company-required"
-                      className={`label-form-required ${
-                        companyEmpty === false ? "hidden" : ""
-                      }`}
-                    >
-                      Company is required
-                    </label>
-                  </div>
-                </div>
-              </div>
+              <Page1
+                nameEmpty={nameEmpty}
+                formData={formData}
+                phoneEmpty={phoneEmpty}
+                companyEmpty={companyEmpty}
+                emailEmpty={emailEmpty}
+                setFormData={setFormData}
+                nameRef={nameRef}
+                emailRef={emailRef}
+                phoneRef={phoneRef}
+                companyRef={companyRef}
+              />
             );
           } else if (page === 1) {
-            return (
-              <div className="our-services">
-                <div className="body">
-                  <div className="item-1">
-                    <label className="radio-box">
-                      <input
-                        type="radio"
-                        name="service"
-                        class="card-input-element"
-                        value="Development"
-                        checked={formData.service === "Development"}
-                        onChange={(event) =>
-                          setFormData({
-                            ...formData,
-                            service: event.target.value,
-                          })
-                        }
-                      />
-                      <div className="card-input">
-                        <div className="card-icon">
-                          <img
-                            className="img-icon"
-                            src="development.png"
-                            alt="development"
-                          />
-                        </div>
-                        <div className="card-text">Development</div>
-                      </div>
-                    </label>
-                  </div>
-
-                  <div className="item-2">
-                    <label className="radio-box">
-                      <input
-                        type="radio"
-                        name="service"
-                        class="card-input-element"
-                        value="Web Design"
-                        checked={formData.service === "Web Design"}
-                        onChange={(event) =>
-                          setFormData({
-                            ...formData,
-                            service: event.target.value,
-                          })
-                        }
-                      />
-                      <div className="card-input">
-                        <div className="card-icon">
-                          <img className="img-icon" src="web.png" alt="web" />
-                        </div>
-                        <div className="card-text">Web Design</div>
-                      </div>
-                    </label>
-                  </div>
-
-                  <div className="item-3">
-                    <label className="radio-box">
-                      <input
-                        type="radio"
-                        name="service"
-                        class="card-input-element"
-                        checked={formData.service === "Marketing"}
-                        value="Marketing"
-                        onChange={(event) =>
-                          setFormData({
-                            ...formData,
-                            service: event.target.value,
-                          })
-                        }
-                      />
-                      <div className="card-input">
-                        <div className="card-icon">
-                          <img
-                            className="img-icon"
-                            src="marketing.png"
-                            alt="marketing"
-                          />
-                        </div>
-                        <div className="card-text">Marketing</div>
-                      </div>
-                    </label>
-                  </div>
-
-                  <div className="item-4">
-                    <label className="radio-box">
-                      <input
-                        type="radio"
-                        name="service"
-                        class="card-input-element"
-                        value="Other"
-                        checked={formData.service === "Other"}
-                        onChange={(event) =>
-                          setFormData({
-                            ...formData,
-                            service: event.target.value,
-                          })
-                        }
-                      />
-                      <div className="card-input">
-                        <div className="card-icon">
-                          <img
-                            className="img-icon"
-                            src="other.png"
-                            alt="other"
-                          />
-                        </div>
-                        <div className="card-text">Other</div>
-                      </div>
-                    </label>
-                  </div>
-                </div>
-              </div>
-            );
+            return <Page2 formData={formData} setFormData={setFormData} />;
           } else if (page === 2) {
-            return (
-              <div className="budget">
-                <div className="body">
-                  <div className="item-1">
-                    <label className="radio-box">
-                      <input
-                        type="radio"
-                        name="budget"
-                        class="card-input-element-2"
-                        value="$5.000-$10.000"
-                        checked={formData.budget === "$5.000-$10.000"}
-                        onChange={(event) =>
-                          setFormData({
-                            ...formData,
-                            budget: event.target.value,
-                          })
-                        }
-                      />
-                      <div className="card-input-2">
-                        <img
-                          className="check-icon"
-                          src={
-                            formData.budget === "$5.000-$10.000"
-                              ? "checked.png"
-                              : "unchecked.png"
-                          }
-                          alt="other"
-                        />
-                        <div className="card-text">$5.000-$10.000</div>
-                      </div>
-                    </label>
-                  </div>
-
-                  <div className="item-2">
-                    <label className="radio-box">
-                      <input
-                        type="radio"
-                        name="budget"
-                        class="card-input-element-2"
-                        value="$10.000-$20.000"
-                        checked={formData.budget === "$10.000-$20.000"}
-                        onChange={(event) =>
-                          setFormData({
-                            ...formData,
-                            budget: event.target.value,
-                          })
-                        }
-                      />
-                      <div className="card-input-2">
-                        <img
-                          className="check-icon"
-                          src={
-                            formData.budget === "$10.000-$20.000"
-                              ? "checked.png"
-                              : "unchecked.png"
-                          }
-                          alt="other"
-                        />
-                        <div className="card-text">$10.000-$20.000</div>
-                      </div>
-                    </label>
-                  </div>
-
-                  <div className="item-3">
-                    <label className="radio-box">
-                      <input
-                        type="radio"
-                        name="budget"
-                        class="card-input-element-2"
-                        value="$20.000-$50.000"
-                        checked={formData.budget === "$20.000-$50.000"}
-                        onChange={(event) =>
-                          setFormData({
-                            ...formData,
-                            budget: event.target.value,
-                          })
-                        }
-                      />
-                      <div className="card-input-2">
-                        <img
-                          className="check-icon"
-                          src={
-                            formData.budget === "$20.000-$50.000"
-                              ? "checked.png"
-                              : "unchecked.png"
-                          }
-                          alt="other"
-                        />
-                        <div className="card-text">$20.000-$50.000</div>
-                      </div>
-                    </label>
-                  </div>
-
-                  <div className="item-4">
-                    <label className="radio-box">
-                      <input
-                        type="radio"
-                        name="budget"
-                        class="card-input-element-2"
-                        value="$50.000"
-                        checked={formData.budget === "$50.000"}
-                        onChange={(event) =>
-                          setFormData({
-                            ...formData,
-                            budget: event.target.value,
-                          })
-                        }
-                      />
-                      <div className="card-input-2">
-                        <img
-                          className="check-icon"
-                          src={
-                            formData.budget === "$50.000"
-                              ? "checked.png"
-                              : "unchecked.png"
-                          }
-                          alt="other"
-                        />
-                        <div className="card-text">$50.000 +</div>
-                      </div>
-                    </label>
-                  </div>
-                </div>
-              </div>
-            );
+            return <Page3 formData={formData} setFormData={setFormData} />;
           } else if (page === 3) {
-            return (
-              <div className="complete">
-                <img
-                  className="complete-icon"
-                  src="complete.png"
-                  alt="complete"
-                />{" "}
-                <h3>Submit your quote request</h3>
-                <h2>
-                  Please review all the information you previously typed in the
-                  past steps, and if all is okay, submit your message to receive
-                  a project quote in 24 - 48 hours.
-                </h2>
-                <div className="submit">
-                  <button
-                    className="button-submit"
-                    onClick={() => {
-                      const myJSON = JSON.stringify(formData);
-                      alert(myJSON);
-                    }}
-                  >
-                    Submit
-                  </button>
-                </div>
-              </div>
-            );
+            return <Page4 formData={formData} />;
           }
         };
 
@@ -500,28 +121,28 @@
                     let anyEmptyField = false;
                     if (formData.name.trim() === "") {
                       setNameEmpty(true);
-                      document.getElementById("name").focus();
+                      nameRef.current.focus();
                       anyEmptyField = true;
                     } else {
                       setNameEmpty(false);
                     }
                     if (formData.email.trim() === "") {
                       setEmailEmpty(true);
-                      document.getElementById("email").focus();
+                      emailRef.current.focus();
                       anyEmptyField = true;
                     } else {
                       setEmailEmpty(false);
                     }
                     if (formData.phone.trim() === "") {
                       setPhoneEmpty(true);
-                      document.getElementById("phone").focus();
+                      phoneRef.current.focus();
                       anyEmptyField = true;
                     } else {
                       setPhoneEmpty(false);
                     }
                     if (formData.company.trim() === "") {
                       setCompanyEmpty(true);
-                      document.getElementById("company").focus();
+                      companyRef.current.focus();
                       anyEmptyField = true;
                     } else {
                       setCompanyEmpty(false);
@@ -543,6 +164,424 @@
                 }}
               >
                 {page === FormTitles.length - 1 ? "Submit" : "Next step"}
+              </button>
+            </div>
+          </div>
+        );
+      }
+
+      function Page1({
+        nameEmpty,
+        formData,
+        setFormData,
+        emailEmpty,
+        phoneEmpty,
+        companyEmpty,
+        nameRef,
+        emailRef,
+        phoneRef,
+        companyRef,
+      }) {
+        return (
+          <div className="contact-details">
+            <div className="body">
+              <div className="item-1">
+                <input
+                  id="name"
+                  className={`text-edit-form icon-name ${
+                    nameEmpty === false ? "" : "empty-field-text-edit"
+                  }`}
+                  type="text"
+                  placeholder="Name"
+                  value={formData.name}
+                  onChange={(event) =>
+                    setFormData({ ...formData, name: event.target.value })
+                  }
+                  ref={nameRef}
+                />
+                <label
+                  id="label-name"
+                  className={`label-form ${
+                    nameEmpty === false ? "" : "empty-field-label"
+                  }`}
+                  htmlFor="name"
+                >
+                  Name
+                </label>
+                <label
+                  id="label-name-required"
+                  className={`label-form-required ${
+                    nameEmpty === false ? "hidden" : ""
+                  }`}
+                >
+                  Name is required
+                </label>
+              </div>
+
+              <div className="item-2">
+                <input
+                  id="email"
+                  className={`text-edit-form icon-email ${
+                    emailEmpty === false ? "" : "empty-field-text-edit"
+                  }`}
+                  type="text"
+                  placeholder="Email"
+                  value={formData.email}
+                  onChange={(event) =>
+                    setFormData({ ...formData, email: event.target.value })
+                  }
+                  ref={emailRef}
+                />
+                <label
+                  id="label-email"
+                  htmlFor="email"
+                  className={`label-form ${
+                    emailEmpty === false ? "" : "empty-field-label"
+                  }`}
+                >
+                  Email
+                </label>
+                <label
+                  id="label-email-required"
+                  className={`label-form-required ${
+                    emailEmpty === false ? "hidden" : ""
+                  }`}
+                >
+                  Email is required
+                </label>
+              </div>
+
+              <div className="item-3">
+                <input
+                  id="phone"
+                  className={`text-edit-form icon-phone ${
+                    phoneEmpty === false ? "" : "empty-field-text-edit"
+                  }`}
+                  type="text"
+                  placeholder="Phone number"
+                  value={formData.phone}
+                  onChange={(event) =>
+                    setFormData({ ...formData, phone: event.target.value })
+                  }
+                />{" "}
+                <label
+                  id="label-phone"
+                  htmlFor="phone"
+                  className={`label-form ${
+                    phoneEmpty === false ? "" : "empty-field-label"
+                  }`}
+                  ref={phoneRef}
+                >
+                  Phone Number
+                </label>{" "}
+                <label
+                  id="label-phone-required"
+                  className={`label-form-required ${
+                    phoneEmpty === false ? "hidden" : ""
+                  }`}
+                >
+                  Phone is required
+                </label>
+              </div>
+
+              <div className="item-4">
+                <input
+                  id="company"
+                  className={`text-edit-form icon-company ${
+                    companyEmpty === false ? "" : "empty-field-text-edit"
+                  }`}
+                  type="text"
+                  placeholder="Company"
+                  value={formData.company}
+                  onChange={(event) =>
+                    setFormData({
+                      ...formData,
+                      company: event.target.value,
+                    })
+                  }
+                  ref={companyRef}
+                />{" "}
+                <label
+                  id="label-company"
+                  className={`label-form ${
+                    companyEmpty === false ? "" : "empty-field-label"
+                  }`}
+                >
+                  Company
+                </label>{" "}
+                <label
+                  id="label-company-required"
+                  className={`label-form-required ${
+                    companyEmpty === false ? "hidden" : ""
+                  }`}
+                >
+                  Company is required
+                </label>
+              </div>
+            </div>
+          </div>
+        );
+      }
+
+      function Page2({ formData, setFormData }) {
+        return (
+          <div className="our-services">
+            <div className="body">
+              <div className="item-1">
+                <label className="radio-box">
+                  <input
+                    type="radio"
+                    name="service"
+                    class="card-input-element"
+                    value="Development"
+                    checked={formData.service === "Development"}
+                    onChange={(event) =>
+                      setFormData({
+                        ...formData,
+                        service: event.target.value,
+                      })
+                    }
+                  />
+                  <div className="card-input">
+                    <div className="card-icon">
+                      <img
+                        className="img-icon"
+                        src="development.png"
+                        alt="development"
+                      />
+                    </div>
+                    <div className="card-text">Development</div>
+                  </div>
+                </label>
+              </div>
+
+              <div className="item-2">
+                <label className="radio-box">
+                  <input
+                    type="radio"
+                    name="service"
+                    class="card-input-element"
+                    value="Web Design"
+                    checked={formData.service === "Web Design"}
+                    onChange={(event) =>
+                      setFormData({
+                        ...formData,
+                        service: event.target.value,
+                      })
+                    }
+                  />
+                  <div className="card-input">
+                    <div className="card-icon">
+                      <img className="img-icon" src="web.png" alt="web" />
+                    </div>
+                    <div className="card-text">Web Design</div>
+                  </div>
+                </label>
+              </div>
+
+              <div className="item-3">
+                <label className="radio-box">
+                  <input
+                    type="radio"
+                    name="service"
+                    class="card-input-element"
+                    checked={formData.service === "Marketing"}
+                    value="Marketing"
+                    onChange={(event) =>
+                      setFormData({
+                        ...formData,
+                        service: event.target.value,
+                      })
+                    }
+                  />
+                  <div className="card-input">
+                    <div className="card-icon">
+                      <img
+                        className="img-icon"
+                        src="marketing.png"
+                        alt="marketing"
+                      />
+                    </div>
+                    <div className="card-text">Marketing</div>
+                  </div>
+                </label>
+              </div>
+
+              <div className="item-4">
+                <label className="radio-box">
+                  <input
+                    type="radio"
+                    name="service"
+                    class="card-input-element"
+                    value="Other"
+                    checked={formData.service === "Other"}
+                    onChange={(event) =>
+                      setFormData({
+                        ...formData,
+                        service: event.target.value,
+                      })
+                    }
+                  />
+                  <div className="card-input">
+                    <div className="card-icon">
+                      <img className="img-icon" src="other.png" alt="other" />
+                    </div>
+                    <div className="card-text">Other</div>
+                  </div>
+                </label>
+              </div>
+            </div>
+          </div>
+        );
+      }
+
+      function Page3({ formData, setFormData }) {
+        return (
+          <div className="budget">
+            <div className="body">
+              <div className="item-1">
+                <label className="radio-box">
+                  <input
+                    type="radio"
+                    name="budget"
+                    class="card-input-element-2"
+                    value="$5.000-$10.000"
+                    checked={formData.budget === "$5.000-$10.000"}
+                    onChange={(event) =>
+                      setFormData({
+                        ...formData,
+                        budget: event.target.value,
+                      })
+                    }
+                  />
+                  <div className="card-input-2">
+                    <img
+                      className="check-icon"
+                      src={
+                        formData.budget === "$5.000-$10.000"
+                          ? "checked.png"
+                          : "unchecked.png"
+                      }
+                      alt="other"
+                    />
+                    <div className="card-text">$5.000-$10.000</div>
+                  </div>
+                </label>
+              </div>
+
+              <div className="item-2">
+                <label className="radio-box">
+                  <input
+                    type="radio"
+                    name="budget"
+                    class="card-input-element-2"
+                    value="$10.000-$20.000"
+                    checked={formData.budget === "$10.000-$20.000"}
+                    onChange={(event) =>
+                      setFormData({
+                        ...formData,
+                        budget: event.target.value,
+                      })
+                    }
+                  />
+                  <div className="card-input-2">
+                    <img
+                      className="check-icon"
+                      src={
+                        formData.budget === "$10.000-$20.000"
+                          ? "checked.png"
+                          : "unchecked.png"
+                      }
+                      alt="other"
+                    />
+                    <div className="card-text">$10.000-$20.000</div>
+                  </div>
+                </label>
+              </div>
+
+              <div className="item-3">
+                <label className="radio-box">
+                  <input
+                    type="radio"
+                    name="budget"
+                    class="card-input-element-2"
+                    value="$20.000-$50.000"
+                    checked={formData.budget === "$20.000-$50.000"}
+                    onChange={(event) =>
+                      setFormData({
+                        ...formData,
+                        budget: event.target.value,
+                      })
+                    }
+                  />
+                  <div className="card-input-2">
+                    <img
+                      className="check-icon"
+                      src={
+                        formData.budget === "$20.000-$50.000"
+                          ? "checked.png"
+                          : "unchecked.png"
+                      }
+                      alt="other"
+                    />
+                    <div className="card-text">$20.000-$50.000</div>
+                  </div>
+                </label>
+              </div>
+
+              <div className="item-4">
+                <label className="radio-box">
+                  <input
+                    type="radio"
+                    name="budget"
+                    class="card-input-element-2"
+                    value="$50.000"
+                    checked={formData.budget === "$50.000"}
+                    onChange={(event) =>
+                      setFormData({
+                        ...formData,
+                        budget: event.target.value,
+                      })
+                    }
+                  />
+                  <div className="card-input-2">
+                    <img
+                      className="check-icon"
+                      src={
+                        formData.budget === "$50.000"
+                          ? "checked.png"
+                          : "unchecked.png"
+                      }
+                      alt="other"
+                    />
+                    <div className="card-text">$50.000 +</div>
+                  </div>
+                </label>
+              </div>
+            </div>
+          </div>
+        );
+      }
+
+      function Page4(formData) {
+        return (
+          <div className="complete">
+            <img className="complete-icon" src="complete.png" alt="complete" />{" "}
+            <h3>Submit your quote request</h3>
+            <h2>
+              Please review all the information you previously typed in the past
+              steps, and if all is okay, submit your message to receive a
+              project quote in 24 - 48 hours.
+            </h2>
+            <div className="submit">
+              <button
+                className="button-submit"
+                onClick={() => {
+                  const myJSON = JSON.stringify(formData);
+                  alert(myJSON);
+                }}
+              >
+                Submit
               </button>
             </div>
           </div>
